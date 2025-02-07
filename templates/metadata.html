@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Images and Metadata</title>
+    <style>
+        .container {
+            display: flex;
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+        .image-container {
+            width: 50%;
+            padding: 10px;
+        }
+        .metadata-container {
+            width: 50%;
+            padding: 10px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        .metadata-box {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .button-container {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .download-button {
+            background-color: #008CBA;
+        }
+        .download-button:hover {
+            background-color: #007399;
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Images and Metadata</h1>
+    {% for image in images %}
+    <div class="container">
+        <div class="image-container">
+            <img src="{{ url_for('static', filename='results/' + image.filename) }}" alt="이미지">
+        </div>
+        <div class="metadata-container">
+            <div class="metadata-box">
+                <h3>{{ image.filename }}</h3>
+                <pre>{{ image.metadata | tojson(indent=2) }}</pre>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <div class="button-container">
+        <a href="/" class="button">New Search</a>
+        <a href="{{ url_for('download_all') }}" class="button download-button">Download All Files</a>
+    </div>
+</body>
+</html> 
