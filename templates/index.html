@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WHO META?</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .search-form {
+            text-align: center;
+            margin-top: 50px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 300px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 20px;
+        }
+        .loading {
+            display: none;
+        }
+        .result-link {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .result-link a {
+            display: inline-block;
+            color: #007bff;
+            text-decoration: none;
+            font-size: 18px;
+            margin: 10px 20px;
+        }
+        .result-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="search-form">
+        <h1>WHO META?</h1>
+        <form id="searchForm">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="text" name="domain" placeholder="Enter domain (e.g., nshc.net)" required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    <div class="loading">Searching...</div>
+    <div class="result-link">
+        <a href="#" id="checkResults">Domain Analysis →</a>
+        <br><br>
+        <a href="#" id="checkMetadata">Images & Metadata →</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#searchForm').on('submit', function(e) {
+                e.preventDefault();
+                const domain = $('input[name=domain]').val();
+                $('.loading').show();
+                $('.result-link').hide();
+
+                $.ajax({
+                    url: '/search',
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': $('input[name=csrf_token]').val()
+                    },
+                    data: { 
+                        domain: domain,
+                        csrf_token: $('input[name=csrf_token]').val()
+                    },
+                    success: function(response) {
+                        $('.loading').hide();
+                        if (response.error) {
+                            alert(response.error);
+                            return;
+                        }
+                        
+                        // 검색 결과 페이지 링크 생성
+                        $('#checkResults').attr('href', `/results/${response.json_file}`);
+                        $('#checkMetadata').attr('href', `/metadata/${response.json_file}`);
+                        $('.result-link').show();
+                    },
+                    error: function(xhr, status, error) {
+                        $('.loading').hide();
+                        alert('An error occurred: ' + error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html> 
