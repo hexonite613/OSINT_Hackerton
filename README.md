@@ -11,7 +11,7 @@
 
 ---
 
-<p align="center"> Singapore OSINT Hackathon
+<p align="center"> Singapore OSINT Hackathon(1st Place)
     <br> 
 </p>
 
@@ -66,5 +66,5 @@ pip install beautifulsoup4
 - HTML, CSS
 
 ## ✍️ Authors <a name = "authors"></a>
-
+![1738752155905-2](https://github.com/user-attachments/assets/8b21adc9-6754-4e96-9264-de2119bb4cbe)
 
